@@ -1,16 +1,17 @@
-import { Navigate } from 'react-router-dom';
-import { isAdmin } from '@/lib/auth';
+import React from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
 
-interface AdminProtectedRouteProps {
-  children: React.ReactNode;
-}
+const AdminProtectedRoute = () => {
+  const { auth } = useAuth();
 
-const AdminProtectedRoute = ({ children }: AdminProtectedRouteProps) => {
-  if (!isAdmin()) {
+  // If auth is missing OR the user is a student
+  if (!auth || auth.user.role === 'student') {
     return <Navigate to="/admin/login" replace />;
   }
 
-  return <>{children}</>;
+  // If auth is valid, render the child route (e.g., AdminDashboard)
+  return <Outlet />;
 };
 
 export default AdminProtectedRoute;

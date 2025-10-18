@@ -1,67 +1,71 @@
-import { useState } from 'react';
+import { useState } from 'react'; // 1. REMOVED useEffect
 import { useNavigate, Link } from 'react-router-dom';
 import { LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
-import { saveAuth } from '@/lib/auth';
+// import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
+import api from '@/services/api'; 
+import { useAuth } from '@/context/AuthContext'; 
+import { jwtDecode } from 'jwt-decode';
+
+// Define the shape of the data inside our JWT
+interface DecodedToken {
+  sub: string; // This will be the user's email
+  role: string;
+  exp: number;
+}
 
 const Login = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
+  // const { toast } = useToast();
+  
+  const { saveAuth } = useAuth(); // 2. REMOVED 'auth' from here, it's not needed
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // 3. DELETE THE ENTIRE useEffect BLOCK.
+  // useEffect(() => { ... }, [auth, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const formData = new FormData();
+    formData.append('username', email);
+    formData.append('password', password);
+
     try {
-      // Mock authentication
-      const response = await fetch('/data/students.json');
-      const students = await response.json();
-      
-      const user = students.find((s: any) => s.email === email && s.password === password);
-      
-      if (user) {
-        // Generate mock JWT
-        const mockToken = {
-          token: 'mock-jwt-token-' + Date.now(),
-          user: {
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            role: 'student' as const
-          },
-          expiresAt: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
-        };
-
-        saveAuth(mockToken);
-        
-        toast({
-          title: "Login Successful",
-          description: `Welcome back, ${user.name}!`,
-        });
-
-        navigate('/dashboard/documents');
-      } else {
-        toast({
-          title: "Login Failed",
-          description: "Invalid email or password.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "An error occurred. Please try again.",
-        variant: "destructive",
+      const response = await api.post('/auth/token', formData, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       });
+
+      const { access_token } = response.data;
+      const decodedToken = jwtDecode<DecodedToken>(access_token);
+
+      const authData = {
+        token: access_token,
+        user: {
+          email: decodedToken.sub,
+          role: decodedToken.role as ('student' | 'admin'),
+        },
+        expiresAt: decodedToken.exp * 1000 
+      };
+      
+      console.log("Saving auth data:", authData);
+      
+      // 4. THIS IS THE ONLY THING THAT SHOULD HAPPEN.
+      // The router will handle the redirect automatically.
+      saveAuth(authData);
+
+    } catch (error: any) {
+      const message = error.response?.data?.detail || "Login failed. Please check credentials.";
+      console.error(message);
     }
   };
 
+  // Your JSX remains exactly the same
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -69,9 +73,7 @@ const Login = () => {
       <div className="flex-1 bg-accent/30 flex items-center justify-center py-12">
         <Card className="w-full max-w-md mx-4">
           <CardHeader className="text-center">
-            <div className="mx-auto w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4">
-              <LogIn className="h-6 w-6 text-primary-foreground" />
-            </div>
+            {/* ... rest of CardHeader */}
             <CardTitle>Student Login</CardTitle>
             <CardDescription>Access your admission portal</CardDescription>
           </CardHeader>
@@ -105,7 +107,7 @@ const Login = () => {
               <Button type="submit" className="w-full">
                 Login
               </Button>
-
+              
               <div className="text-center text-sm">
                 <span className="text-muted-foreground">Don't have an account? </span>
                 <Link to="/register" className="text-primary hover:underline font-medium">

@@ -12,17 +12,37 @@ const DocumentUpload = () => {
   const { toast } = useToast();
   const user = getCurrentUser();
   const [uploads, setUploads] = useState({
+    tenth_memo: null as File | null,
+    tenth_bonafide: null as File | null,
+    tenth_transfer_certificate: null as File | null,
+    twelth_memo: null as File | null,
+    twelth_bonafide: null as File | null,
+    twelth_transfer_certificate: null as File | null,
+    ecet_eamcet: null as File | null,
+    rank_card: null as File | null,
+    allotment_order: null as File | null,
+    joining_report: null as File | null,
     aadhar: null as File | null,
-    tenth: null as File | null,
-    twelfth: null as File | null,
-    photo: null as File | null
+    caste_certificate: null as File | null,
+    income_certificate: null as File | null,
+    photo: null as File | null,
   });
 
   const documents = [
-    { id: 'aadhar', label: 'Aadhar Card', required: true },
-    { id: 'tenth', label: '10th Marksheet', required: true },
-    { id: 'twelfth', label: '12th Marksheet', required: true },
-    { id: 'photo', label: 'Passport Photo', required: true }
+    { id: 'tenth_memo', label: '10th Marksheet', required: true },
+    { id: 'tenth_bonafide', label: 'School Bonafide (4th-10th)', required: true },
+    { id: 'tenth_transfer_certificate', label: '10th Transfer Certificate', required: true },
+    { id: 'twelth_memo', label: '12th Marksheet', required: true },
+    { id: 'twelth_bonafide', label: '12th Bonafide', required: true },
+    { id: 'twelth_transfer_certificate', label: '12th Transfer Certificate', required: true },
+    { id: 'ecet_eamcet', label: 'ECET/EAMCET Hallticket', required: true },
+    { id: 'rank_card', label: 'Rank Card', required: true },
+    { id: 'allotment_order', label: 'Allotment Order', required: true },
+    { id: 'joining_report', label: 'Joining Report', required: true },
+    { id: 'aadhar', label: 'Aadhar', required: true },
+    { id: 'caste_certificate', label: 'Caste Certificate', required: true },
+    { id: 'income_certificate', label: 'Income Certificate', required: true },
+    { id: 'photo', label: 'Passport Photo', required: true },
   ];
 
   const handleFileChange = (docId: string, file: File | null) => {

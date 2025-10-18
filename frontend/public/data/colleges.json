@@ -1,0 +1,42 @@
+[
+  {
+    "id": "COURSE001",
+    "name": "Computer Science Engineering",
+    "code": "CSE",
+    "duration": "4 Years",
+    "seats": 120,
+    "description": "Bachelor of Technology in Computer Science and Engineering"
+  },
+  {
+    "id": "COURSE002",
+    "name": "Electronics & Communication Engineering",
+    "code": "ECE",
+    "duration": "4 Years",
+    "seats": 90,
+    "description": "Bachelor of Technology in Electronics and Communication Engineering"
+  },
+  {
+    "id": "COURSE003",
+    "name": "Mechanical Engineering",
+    "code": "MECH",
+    "duration": "4 Years",
+    "seats": 90,
+    "description": "Bachelor of Technology in Mechanical Engineering"
+  },
+  {
+    "id": "COURSE004",
+    "name": "Civil Engineering",
+    "code": "CIVIL",
+    "duration": "4 Years",
+    "seats": 60,
+    "description": "Bachelor of Technology in Civil Engineering"
+  },
+  {
+    "id": "COURSE005",
+    "name": "Electrical Engineering",
+    "code": "EEE",
+    "duration": "4 Years",
+    "seats": 60,
+    "description": "Bachelor of Technology in Electrical and Electronics Engineering"
+  }
+]

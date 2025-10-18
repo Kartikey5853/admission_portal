@@ -1,0 +1,12 @@
+[
+  {
+    "id": "ACAD001",
+    "student_id": "STU001",
+    "tenth_percentage": 92.5,
+    "tenth_board": "SSC",
+    "tenth_year": 2021,
+    "twelfth_percentage": 88.0,
+    "twelfth_board": "Intermediate",
+    "twelfth_year": 2023
+  }
+]

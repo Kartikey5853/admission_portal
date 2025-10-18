@@ -1,0 +1,27 @@
+[
+  {
+    "category": "Tuition Fee",
+    "amount": 75000,
+    "frequency": "Annual"
+  },
+  {
+    "category": "Laboratory Fee",
+    "amount": 10000,
+    "frequency": "Annual"
+  },
+  {
+    "category": "Library Fee",
+    "amount": 5000,
+    "frequency": "Annual"
+  },
+  {
+    "category": "Admission Fee",
+    "amount": 5000,
+    "frequency": "One-time"
+  },
+  {
+    "category": "Hostel Fee",
+    "amount": 40000,
+    "frequency": "Annual (Optional)"
+  }
+]

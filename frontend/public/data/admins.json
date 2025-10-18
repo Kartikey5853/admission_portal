@@ -1,0 +1,9 @@
+[
+  {
+    "id": "ADM001",
+    "email": "admin@tkrcet.edu.in",
+    "password": "admin123",
+    "name": "Dr. Venkat Reddy",
+    "role": "admin"
+  }
+]

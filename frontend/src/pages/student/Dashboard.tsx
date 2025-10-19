@@ -2,14 +2,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FileText, Upload, CheckCircle, LogOut, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { clearAuth, getCurrentUser } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth'; // We still use this to get the user's name
+import { useAuth } from '@/context/AuthContext'; // 1. Import the useAuth hook
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const user = getCurrentUser();
+  const { logout } = useAuth(); // 2. Get the 'logout' function from our context
 
   const handleLogout = () => {
-    clearAuth();
+    logout(); // 3. Call the context's logout function
     navigate('/login');
   };
 
@@ -49,6 +51,7 @@ const Dashboard = () => {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 text-sm">
               <User className="h-4 w-4 text-primary" />
+              {/* Assuming getCurrentUser() returns an object with 'name' */}
               <span className="font-medium">{user?.name}</span>
             </div>
             <Button variant="outline" size="sm" onClick={handleLogout}>

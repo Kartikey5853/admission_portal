@@ -7,11 +7,10 @@ const ProtectedRoute = () => {
 
   // If auth is missing OR the user is not a student
   if (!auth || auth.user.role !== 'student') {
-    // Redirect to the login page
     return <Navigate to="/login" replace />;
   }
 
-  // If auth is valid, render the child route (e.g., Dashboard)
+  // If auth is valid, render the nested child route (e.g., Dashboard)
   return <Outlet />;
 };
 

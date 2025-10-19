@@ -10,7 +10,7 @@ const AdminProtectedRoute = () => {
     return <Navigate to="/admin/login" replace />;
   }
 
-  // If auth is valid, render the child route (e.g., AdminDashboard)
+  // If auth is valid, render the nested child route (e.Look, AdminDashboard)
   return <Outlet />;
 };
 

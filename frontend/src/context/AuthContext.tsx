@@ -4,7 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 // 1. Define the shape of your user and auth state
 interface AuthUser {
   email: string;
-  role: 'student' | 'admin';
+  role: 'student' | 'admin' | 'superadmin'; // <-- THIS IS THE FIX
 }
 
 interface AuthToken {
@@ -36,7 +36,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const storedToken = localStorage.getItem('authToken');
     if (storedToken) {
       try {
-        const parsedToken: AuthToken = JSON.parse(storedToken);
+        // We tell JSON.parse what type to expect
+        const parsedToken = JSON.parse(storedToken) as AuthToken;
         
         // Check if token is expired
         if (parsedToken.expiresAt > Date.now()) {
@@ -62,7 +63,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = () => {
     setAuth(null);
     localStorage.removeItem('authToken');
-    // You might also want to remove the interceptor if you set it up to be dynamic
   };
 
   return (

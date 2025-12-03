@@ -2,10 +2,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"; 
-import { useAuth, AuthProvider } from './context/AuthContext'; 
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useAuth, AuthProvider } from './context/AuthContext'; // Import both
 
-// Page Imports
+// --- Page Imports ---
 import Landing from "./pages/Landing";
 import Register from "./pages/student/Register";
 import Login from "./pages/student/Login";
@@ -19,20 +19,26 @@ import Students from "./pages/admin/Students";
 import StudentDetail from "./pages/admin/StudentDetail";
 import Colleges from "./pages/admin/Colleges";
 import AdminSettings from "./pages/admin/Settings";
-import ProtectedRoute from "./components/ProtectedRoute"; // Student protector
-import AdminProtectedRoute from "./components/AdminProtectedRoute"; // Admin protector
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+// --- This component holds all your routing logic ---
 const AppRoutes = () => {
   const { auth } = useAuth();
 
+  // --- DEBUG LINE ---
+  console.log("AppRoutes re-rendered. Auth state is:", auth);
+
   return (
     <Routes>
+      {/* === Public Routes === */}
       <Route path="/" element={<Landing />} />
 
       {/* === Auth Routes === */}
+      {/* This logic handles automatic redirection */}
       <Route 
         path="/login" 
         element={auth ? <Navigate to="/dashboard" replace /> : <Login />} 
@@ -41,8 +47,12 @@ const AppRoutes = () => {
         path="/register" 
         element={auth ? <Navigate to="/dashboard" replace /> : <Register />} 
       />
+      <Route 
+        path="/admin/login" 
+        element={auth && auth.user.role !== 'student' ? <Navigate to="/admin/dashboard" replace /> : <AdminLogin />} 
+      />
       
-      {/* === Student Routes (Nested) === */}
+      {/* === Student Routes (Corrected Layout) === */}
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/documents" element={<DocumentUpload />} />
@@ -50,9 +60,7 @@ const AppRoutes = () => {
         <Route path="/dashboard/status" element={<Status />} />
       </Route>
       
-      {/* === Admin Routes (Nested) === */}
-      <Route path="/admin/login" element={<AdminLogin />} />
-      
+      {/* === Admin Routes (Corrected Layout) === */}
       <Route element={<AdminProtectedRoute />}>
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/students" element={<Students />} />
@@ -66,6 +74,7 @@ const AppRoutes = () => {
   );
 }
 
+// --- Your main App component just sets up the providers ---
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -73,7 +82,9 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <AppRoutes /> 
+          {/* --- THIS IS THE FIX --- */}
+          {/* We render the AppRoutes component here */}
+          <AppRoutes />
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
